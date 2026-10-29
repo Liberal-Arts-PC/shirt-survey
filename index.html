@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบสำรวจขนาดเสื้อกีฬาสี</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-red-50 min-h-screen py-6 px-4">
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-red-100">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-red-600 to-rose-700 text-white p-6 text-center">
+            <h1 class="text-2xl font-bold mb-1">👕 แบบสำรวจขนาดเสื้อกีฬาสี</h1>
+            <p class="text-red-100 text-sm">คณะศิลปศาสตร์ มทร.รัตนโกสินทร์</p>
+        </div>
+
+        <div class="p-6">
+            <!-- Form Card -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">1. เลือกรายชื่อของคุณ:</label>
+                    <select id="nameSelect" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none bg-gray-50 text-gray-800 font-medium">
+                        <option value="">-- กรุณาเลือกรายชื่อ --</option>
+                        <option>ผู้ช่วยศาสตราจารย์ ดร.จินตนา ฉัตรบูรภานันท์</option>
+                        <option>ผู้ช่วยศาสตราจารย์ ดร.วัฒนา แช่มวงษ์</option>
+                        <option>ผู้ช่วยศาสตราจารย์ ดร.กัลยา นามสงวน</option>
+                        <option>ผู้ช่วยศาสตราจารย์ ดร.กานต์รวี แพทย์พิทักษ์</option>
+                        <option>อาจารย์วิชชนี โยเหลา</option>
+                        <option>ดร.มณรดา ศิลปบรรเลง</option>
+                        <option>อาจารย์อภินันท์ ศรีไพวัลย์</option>
+                        <option>อาจารย์บุษบง ทองหนู</option>
+                        <option>อาจารย์รมนปวีร์ ชุณห์วิสิทธิกิจ</option>
+                        <option>ดร.สาธิตา ศิริวัฒน์</option>
+                        <option>นางสาวศรยา สินไธสง</option>
+                        <option>นางนิชดา ผูกไมตรี</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">2. เลือกขนาดเสื้อ (รอบอก):</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 34 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 34 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 36 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 36 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 38 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 38 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 40 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 40 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 42 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 42 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 44 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 44 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 46 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 46 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 48 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 48 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
+                            <input type="radio" name="shirtSize" value="อก 50 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 50 นิ้ว</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition col-span-2 sm:col-span-3">
+                            <input type="radio" name="shirtSize" value="อก 62 นิ้ว / ยาว 36 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
+                            <span class="text-gray-800 text-sm font-medium">อก 62 นิ้ว / ยาว 36 นิ้ว</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button onclick="saveData()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 active:scale-95">
+                    บันทึกข้อมูลขนาดเสื้อ
+                </button>
+            </div>
+
+            <!-- Result Section -->
+            <div class="mt-8 border-t pt-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-gray-800">📊 สรุปผลการเลือกไซส์</h2>
+                    <button onclick="clearData()" class="text-xs text-red-500 hover:underline">รีเซ็ตข้อมูล</button>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-4 border overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-700">
+                        <thead>
+                            <tr class="border-b text-gray-900">
+                                <th class="pb-2">ชื่อ - สกุล</th>
+                                <th class="pb-2 text-right">ขนาดเสื้อ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTable">
+                            <tr><td colspan="2" class="text-center text-gray-400 py-4">ยังไม่มีข้อมูลการบันทึก</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getStoredData() {
+            return JSON.parse(localStorage.getItem('shirtSurveyData') || '{}');
+        }
+
+        function renderTable() {
+            const data = getStoredData();
+            const tbody = document.getElementById('resultTable');
+            const keys = Object.keys(data);
+
+            if (keys.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2" class="text-center text-gray-400 py-4">ยังไม่มีข้อมูลการบันทึก</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            keys.forEach(name => {
+                tbody.innerHTML += `<tr class="border-b border-gray-100"><td class="py-2.5">${name}</td><td class="py-2.5 text-right font-semibold text-red-600">${data[name]}</td></tr>`;
+            });
+        }
+
+        function saveData() {
+            const name = document.getElementById('nameSelect').value;
+            const selectedSize = document.querySelector('input[name="shirtSize"]:checked');
+
+            if (!name) {
+                alert('กรุณาเลือกรายชื่อของคุณก่อนครับ');
+                return;
+            }
+            if (!selectedSize) {
+                alert('กรุณาเลือกขนาดเสื้อครับ');
+                return;
+            }
+
+            let data = getStoredData();
+            data[name] = selectedSize.value;
+            localStorage.setItem('shirtSurveyData', JSON.stringify(data));
+
+            alert('บันทึกข้อมูลเรียบร้อยแล้วครับ!');
+            renderTable();
+            
+            document.getElementById('nameSelect').value = '';
+            document.querySelector('input[name="shirtSize"]:checked').checked = false;
+        }
+
+        function clearData() {
+            if (confirm('คุณต้องการรีเซ็ตข้อมูลทั้งหมดใช่หรือไม่?')) {
+                localStorage.removeItem('shirtSurveyData');
+                renderTable();
+            }
+        }
+
+        window.onload = renderTable;
+    </script>
+</body>
+</html>
