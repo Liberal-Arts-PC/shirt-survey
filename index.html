@@ -3,170 +3,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบสำรวจขนาดเสื้อกีฬาสี</title>
+    <title>ระบบสำรวจขนาดเสื้อกีฬาสี</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 for notifications -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Chart.js for summary visual -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Sarabun', sans-serif; }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
+        }
+        .size-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .size-card.active {
+            border-color: #e11d48;
+            background-color: #fff1f2;
+            color: #be123c;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.15);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f43f5e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #be123c;
+        }
     </style>
 </head>
-<body class="bg-red-50 min-h-screen py-6 px-4">
-    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-red-100">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-red-600 to-rose-700 text-white p-6 text-center">
-            <h1 class="text-2xl font-bold mb-1">👕 แบบสำรวจขนาดเสื้อกีฬาสี</h1>
-            <p class="text-red-100 text-sm">คณะศิลปศาสตร์ มทร.รัตนโกสินทร์</p>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+
+    <!-- Header Banner -->
+    <header class="gradient-header text-white pt-8 pb-16 px-4 rounded-b-[2.5rem] shadow-lg relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+        <div class="absolute -left-10 -top-10 w-40 h-40 bg-black/10 rounded-full blur-xl pointer-events-none"></div>
+        
+        <div class="max-w-md mx-auto text-center relative z-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl mb-3 shadow-inner">
+                <i class="fa-solid fa-shirt text-3xl text-white"></i>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-wide">แบบสำรวจขนาดเสื้อกีฬาสี</h1>
+            <p class="text-rose-100 text-sm mt-1 font-light">โปรดเลือกชื่อ-นามสกุล และระบุไซส์เสื้อของคุณ</p>
         </div>
+    </header>
 
-        <div class="p-6">
-            <!-- Form Card -->
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">1. เลือกรายชื่อของคุณ:</label>
-                    <select id="nameSelect" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none bg-gray-50 text-gray-800 font-medium">
-                        <option value="">-- กรุณาเลือกรายชื่อ --</option>
-                        <option>ผู้ช่วยศาสตราจารย์ ดร.จินตนา ฉัตรบูรภานันท์</option>
-                        <option>ผู้ช่วยศาสตราจารย์ ดร.วัฒนา แช่มวงษ์</option>
-                        <option>ผู้ช่วยศาสตราจารย์ ดร.กัลยา นามสงวน</option>
-                        <option>ผู้ช่วยศาสตราจารย์ ดร.กานต์รวี แพทย์พิทักษ์</option>
-                        <option>อาจารย์วิชชนี โยเหลา</option>
-                        <option>ดร.มณรดา ศิลปบรรเลง</option>
-                        <option>อาจารย์อภินันท์ ศรีไพวัลย์</option>
-                        <option>อาจารย์บุษบง ทองหนู</option>
-                        <option>อาจารย์รมนปวีร์ ชุณห์วิสิทธิกิจ</option>
-                        <option>ดร.สาธิตา ศิริวัฒน์</option>
-                        <option>นางสาวศรยา สินไธสง</option>
-                        <option>นางนิชดา ผูกไมตรี</option>
-                    </select>
-                </div>
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto px-4 -mt-8 relative z-20">
 
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">2. เลือกขนาดเสื้อ (รอบอก):</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 34 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 34 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 36 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 36 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 38 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 38 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 40 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 40 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 42 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 42 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 44 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 44 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 46 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 46 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 48 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 48 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition">
-                            <input type="radio" name="shirtSize" value="อก 50 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 50 นิ้ว</span>
-                        </label>
-                        <label class="border rounded-xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-red-50 border-gray-200 transition col-span-2 sm:col-span-3">
-                            <input type="radio" name="shirtSize" value="อก 62 นิ้ว / ยาว 36 นิ้ว" class="text-red-600 focus:ring-red-500 h-4 w-4">
-                            <span class="text-gray-800 text-sm font-medium">อก 62 นิ้ว / ยาว 36 นิ้ว</span>
-                        </label>
+        <!-- Form Card -->
+        <div class="bg-white rounded-3xl shadow-xl shadow-rose-900/5 p-5 sm:p-6 mb-6 border border-rose-100">
+            <form id="surveyForm" onsubmit="submitForm(event)">
+                
+                <!-- Step 1: Select Name -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <span class="w-6 h-6 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                        เลือกชื่อ - นามสกุลของคุณ <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="userSelect" required onchange="handleUserChange()"
+                            class="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:bg-white text-sm text-slate-800 transition appearance-none cursor-pointer">
+                            <option value="" disabled selected>-- กรุณาเลือกรายชื่อ --</option>
+                        </select>
+                        <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <i class="fa-solid fa-chevron-down absolute right-3.5 top-3.5 text-slate-400 pointer-events-none"></i>
+                    </div>
+                    <!-- Selection Indicator -->
+                    <div id="alreadySavedNotice" class="hidden mt-2 p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-amber-500"></i>
+                        <span>คุณเคยบันทึกข้อมูลแล้ว เลือกใหม่เพื่ออัปเดต</span>
                     </div>
                 </div>
 
-                <button onclick="saveData()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 active:scale-95">
-                    บันทึกข้อมูลขนาดเสื้อ
+                <!-- Step 2: Select Size -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <span class="w-6 h-6 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                        เลือกขนาดเสื้อ (นิ้ว) <span class="text-rose-500">*</span>
+                    </label>
+                    
+                    <input type="hidden" id="selectedSize" name="selectedSize" required>
+                    
+                    <!-- Size Grid -->
+                    <div class="grid grid-cols-2 gap-2.5" id="sizeGrid">
+                        <!-- Cards injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Note -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <span class="w-6 h-6 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                        หมายเหตุเพิ่มเติม (ถ้ามี)
+                    </label>
+                    <textarea id="noteInput" rows="2" placeholder="เช่น ต้องการทรงหลวมพิเศษ, ฝากเพื่อนรับ ฯลฯ"
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 focus:bg-white text-sm text-slate-800 transition placeholder-slate-400"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-medium py-3.5 px-4 rounded-2xl shadow-lg shadow-rose-600/30 active:scale-[0.98] transition duration-200 flex items-center justify-center gap-2 text-base">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>บันทึกข้อมูล</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Dashboard & Summary Section -->
+        <div class="bg-white rounded-3xl shadow-xl shadow-rose-900/5 p-5 sm:p-6 border border-rose-100">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-rose-600 text-lg"></i>
+                    <h2 class="font-bold text-slate-800 text-base">สรุปผลการตอบรับ</h2>
+                </div>
+                <span id="progressBadge" class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+                    0 / 12 คน
+                </span>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex bg-slate-100 p-1 rounded-xl mb-4 text-xs font-medium">
+                <button onclick="switchTab('list')" id="tabList" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-rose-600 transition">
+                    <i class="fa-solid fa-list-ul mr-1"></i> รายชื่อทั้งหมด
+                </button>
+                <button onclick="switchTab('chart')" id="tabChart" class="flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-700 transition">
+                    <i class="fa-solid fa-chart-bar mr-1"></i> กราฟสรุปไซส์
                 </button>
             </div>
 
-            <!-- Result Section -->
-            <div class="mt-8 border-t pt-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-gray-800">📊 สรุปผลการเลือกไซส์</h2>
-                    <button onclick="clearData()" class="text-xs text-red-500 hover:underline">รีเซ็ตข้อมูล</button>
+            <!-- Tab Content 1: List -->
+            <div id="contentList" class="space-y-3">
+                <!-- Search Box -->
+                <div class="relative mb-3">
+                    <input type="text" id="searchBox" onkeyup="filterList()" placeholder="ค้นหารายชื่อ..."
+                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                 </div>
-                <div class="bg-gray-50 rounded-xl p-4 border overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-700">
-                        <thead>
-                            <tr class="border-b text-gray-900">
-                                <th class="pb-2">ชื่อ - สกุล</th>
-                                <th class="pb-2 text-right">ขนาดเสื้อ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultTable">
-                            <tr><td colspan="2" class="text-center text-gray-400 py-4">ยังไม่มีข้อมูลการบันทึก</td></tr>
-                        </tbody>
-                    </table>
+
+                <div id="membersList" class="max-h-80 overflow-y-auto pr-1 space-y-2">
+                    <!-- Dynamic rendering -->
+                </div>
+
+                <!-- Export / Actions Buttons -->
+                <div class="pt-3 border-t border-slate-100 flex flex-wrap gap-2">
+                    <button onclick="exportToCSV()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 px-3 rounded-xl font-medium transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                        <span>ดาวน์โหลด Excel</span>
+                    </button>
+                    <button onclick="copyToClipboard()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 px-3 rounded-xl font-medium transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-copy text-blue-600"></i>
+                        <span>คัดลอกสรุป</span>
+                    </button>
+                    <button onclick="resetDataConfirm()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs p-2 rounded-xl transition" title="ล้างข้อมูลทั้งหมด">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Chart -->
+            <div id="contentChart" class="hidden">
+                <div class="relative h-60 w-full">
+                    <canvas id="sizeChart"></canvas>
+                </div>
+                <div id="sizeSummaryBadges" class="mt-4 flex flex-wrap gap-1.5 justify-center">
+                    <!-- Size summary counts -->
                 </div>
             </div>
         </div>
-    </div>
 
+        <footer class="text-center text-slate-400 text-xs mt-6 mb-4">
+            <p>ระบบสำรวจขนาดเสื้อกีฬาสี © 2026</p>
+        </footer>
+    </main>
+
+    <!-- JavaScript Logic -->
     <script>
-        function getStoredData() {
-            return JSON.parse(localStorage.getItem('shirtSurveyData') || '{}');
+        // Data Definitions
+        const memberList = [
+            "ผู้ช่วยศาสตราจารย์ ดร.จินตนา  ฉัตรบูรภานันท์",
+            "ผู้ช่วยศาสตราจารย์ ดร.วัฒนา  แช่มวงษ์",
+            "ผู้ช่วยศาสตราจารย์ ดร.กัลยา  นามสงวน",
+            "ผู้ช่วยศาสตราจารย์ ดร.กานต์รวี  แพทย์พิทักษ์",
+            "อาจารย์วิชชนี  โยเหลา",
+            "ดร.มณรดา  ศิลปบรรเลง",
+            "อาจารย์อภินันท์  ศรีไพวัลย์",
+            "อาจารย์บุษบง  ทองหนู",
+            "อาจารย์รมนปวีร์  ชุณห์วิสิทธิกิจ",
+            "ดร.สาธิตา  ศิริวัฒน์",
+            "นางสาวศรยา  สินไธสง",
+            "นางนิชดา  ผูกไมตรี"
+        ];
+
+        const shirtSizes = [
+            { id: "34", label: "อก 34 นิ้ว", detail: "รอบอก 34\"" },
+            { id: "36", label: "อก 36 นิ้ว", detail: "รอบอก 36\"" },
+            { id: "38", label: "อก 38 นิ้ว", detail: "รอบอก 38\"" },
+            { id: "40", label: "อก 40 นิ้ว", detail: "รอบอก 40\"" },
+            { id: "42", label: "อก 42 นิ้ว", detail: "รอบอก 42\"" },
+            { id: "44", label: "อก 44 นิ้ว", detail: "รอบอก 44\"" },
+            { id: "46", label: "อก 46 นิ้ว", detail: "รอบอก 46\"" },
+            { id: "48", label: "อก 48 นิ้ว", detail: "รอบอก 48\"" },
+            { id: "50", label: "อก 50 นิ้ว", detail: "รอบอก 50\"" },
+            { id: "62", label: "อก 62 นิ้ว", detail: "ความยาว 36\"" }
+        ];
+
+        const STORAGE_KEY = 'sports_day_shirt_survey_data';
+        let surveyData = {}; // Format: { "Name": { size: "40", note: "...", updatedAt: "..." } }
+        let chartInstance = null;
+
+        // Initialize App
+        window.onload = function() {
+            loadStoredData();
+            initDropdown();
+            initSizeGrid();
+            renderDashboard();
+            initChart();
+        };
+
+        // Load LocalStorage
+        function loadStoredData() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                try {
+                    surveyData = JSON.parse(raw);
+                } catch (e) {
+                    surveyData = {};
+                }
+            }
         }
 
-        function renderTable() {
-            const data = getStoredData();
-            const tbody = document.getElementById('resultTable');
-            const keys = Object.keys(data);
+        // Save to LocalStorage
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(surveyData));
+        }
 
-            if (keys.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="2" class="text-center text-gray-400 py-4">ยังไม่มีข้อมูลการบันทึก</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = '';
-            keys.forEach(name => {
-                tbody.innerHTML += `<tr class="border-b border-gray-100"><td class="py-2.5">${name}</td><td class="py-2.5 text-right font-semibold text-red-600">${data[name]}</td></tr>`;
+        // Render Select Options
+        function initDropdown() {
+            const select = document.getElementById('userSelect');
+            select.innerHTML = '<option value="" disabled selected>-- กรุณาเลือกรายชื่อ --</option>';
+            
+            memberList.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                select.appendChild(opt);
             });
         }
 
-        function saveData() {
-            const name = document.getElementById('nameSelect').value;
-            const selectedSize = document.querySelector('input[name="shirtSize"]:checked');
+        // Render Size Choice Buttons
+        function initSizeGrid() {
+            const grid = document.getElementById('sizeGrid');
+            grid.innerHTML = '';
+
+            shirtSizes.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `size-card border border-slate-200 rounded-2xl p-3 text-center cursor-pointer hover:border-rose-300 transition bg-white flex flex-col items-center justify-center`;
+                card.dataset.size = item.id;
+                card.onclick = () => selectSizeCard(item.id);
+
+                card.innerHTML = `
+                    <span class="text-sm font-bold text-slate-800">${item.label}</span>
+                    <span class="text-[11px] text-slate-400 mt-0.5">${item.detail}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Handle Size Card Selection
+        function selectSizeCard(sizeId) {
+            document.getElementById('selectedSize').value = sizeId;
+            
+            // Highlight active UI
+            document.querySelectorAll('.size-card').forEach(card => {
+                if (card.dataset.size === sizeId) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+
+        // Handle User Change in Dropdown
+        function handleUserChange() {
+            const selectedName = document.getElementById('userSelect').value;
+            const notice = document.getElementById('alreadySavedNotice');
+
+            if (surveyData[selectedName]) {
+                // Populate existing data
+                const existing = surveyData[selectedName];
+                selectSizeCard(existing.size);
+                document.getElementById('noteInput').value = existing.note || '';
+                notice.classList.remove('hidden');
+            } else {
+                // Reset size & note selection
+                document.getElementById('selectedSize').value = '';
+                document.getElementById('noteInput').value = '';
+                document.querySelectorAll('.size-card').forEach(c => c.classList.remove('active'));
+                notice.classList.add('hidden');
+            }
+        }
+
+        // Submit Handler
+        function submitForm(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('userSelect').value;
+            const size = document.getElementById('selectedSize').value;
+            const note = document.getElementById('noteInput').value.trim();
 
             if (!name) {
-                alert('กรุณาเลือกรายชื่อของคุณก่อนครับ');
-                return;
-            }
-            if (!selectedSize) {
-                alert('กรุณาเลือกขนาดเสื้อครับ');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือกชื่อ',
+                    text: 'โปรดเลือกชื่อ-นามสกุลจากรายการ',
+                    confirmButtonColor: '#e11d48'
+                });
                 return;
             }
 
-            let data = getStoredData();
-            data[name] = selectedSize.value;
-            localStorage.setItem('shirtSurveyData', JSON.stringify(data));
+            if (!size) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือกขนาดเสื้อ',
+                    text: 'โปรดเลือกขนาดเสื้อกีฬาสีที่ต้องการ',
+                    confirmButtonColor: '#e11d48'
+                });
+                return;
+            }
 
-            alert('บันทึกข้อมูลเรียบร้อยแล้วครับ!');
-            renderTable();
+            // Save Data
+            const now = new Date();
+            const timeString = `${now.toLocaleDateString('th-TH')} ${now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'})}`;
             
-            document.getElementById('nameSelect').value = '';
-            document.querySelector('input[name="shirtSize"]:checked').checked = false;
+            surveyData[name] = {
+                size: size,
+                note: note,
+                updatedAt: timeString
+            };
+
+            saveData();
+            renderDashboard();
+            updateChart();
+
+            // Success Modal
+            Swal.fire({
+                icon: 'success',
+                title: 'บันทึกข้อมูลเรียบร้อย!',
+                html: `<b>${name}</b><br>ขนาดเสื้อที่เลือก: <span class="text-rose-600 font-bold">อก ${size} นิ้ว</span>`,
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#e11d48',
+                customClass: {
+                    popup: 'rounded-3xl'
+                }
+            });
+
+            // Reset selection state indicator
+            document.getElementById('alreadySavedNotice').classList.remove('hidden');
         }
 
-        function clearData() {
-            if (confirm('คุณต้องการรีเซ็ตข้อมูลทั้งหมดใช่หรือไม่?')) {
-                localStorage.removeItem('shirtSurveyData');
-                renderTable();
+        // Render Dashboard Member List
+        function renderDashboard() {
+            const listContainer = document.getElementById('membersList');
+            listContainer.innerHTML = '';
+
+            let completedCount = 0;
+
+            memberList.forEach((name, index) => {
+                const itemData = surveyData[name];
+                const isDone = !!itemData;
+                if (isDone) completedCount++;
+
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-2xl border text-xs flex items-center justify-between transition ${
+                    isDone ? 'bg-rose-50/50 border-rose-200' : 'bg-slate-50 border-slate-200 opacity-75'
+                }`;
+                card.dataset.name = name;
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
+                            isDone ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-500'
+                        }">
+                            ${index + 1}
+                        </div>
+                        <div class="truncate">
+                            <p class="font-medium text-slate-800 truncate">${name}</p>
+                            ${isDone && itemData.note ? `<p class="text-[10px] text-slate-500 truncate"><i class="fa-regular fa-comment-dots mr-1"></i>${itemData.note}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="shrink-0 text-right">
+                        ${isDone ? `
+                            <span class="inline-block bg-rose-600 text-white font-semibold px-2.5 py-1 rounded-xl text-[11px] shadow-sm shadow-rose-200">
+                                อก ${itemData.size}"
+                            </span>
+                        ` : `
+                            <span class="inline-block bg-slate-200 text-slate-500 font-medium px-2 py-0.5 rounded-lg text-[10px]">
+                                ยังไม่ระบุ
+                            </span>
+                        `}
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+
+            // Update Badge Count
+            document.getElementById('progressBadge').textContent = `${completedCount} / ${memberList.length} คน`;
+            filterList(); // Maintain search filter if active
+        }
+
+        // Filter list with search
+        function filterList() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            const items = document.querySelectorAll('#membersList > div');
+            
+            items.forEach(item => {
+                const name = item.dataset.name.toLowerCase();
+                if (name.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Switch Tabs
+        function switchTab(tab) {
+            const contentList = document.getElementById('contentList');
+            const contentChart = document.getElementById('contentChart');
+            const tabList = document.getElementById('tabList');
+            const tabChart = document.getElementById('tabChart');
+
+            if (tab === 'list') {
+                contentList.classList.remove('hidden');
+                contentChart.classList.add('hidden');
+                
+                tabList.className = "flex-1 py-2 rounded-lg bg-white shadow-sm text-rose-600 transition";
+                tabChart.className = "flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-700 transition";
+            } else {
+                contentList.classList.add('hidden');
+                contentChart.classList.remove('hidden');
+
+                tabChart.className = "flex-1 py-2 rounded-lg bg-white shadow-sm text-rose-600 transition";
+                tabList.className = "flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-700 transition";
+                
+                updateChart();
             }
         }
 
-        window.onload = renderTable;
+        // Initialize Chart
+        function initChart() {
+            const ctx = document.getElementById('sizeChart').getContext('2d');
+            
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: shirtSizes.map(s => `อก ${s.id}"`),
+                    datasets: [{
+                        label: 'จำนวน (ตัว)',
+                        data: shirtSizes.map(() => 0),
+                        backgroundColor: '#f43f5e',
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#be123c'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1, precision: 0 }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            updateChart();
+        }
+
+        // Update Chart Data & Badges
+        function updateChart() {
+            if (!chartInstance) return;
+
+            const counts = {};
+            shirtSizes.forEach(s => counts[s.id] = 0);
+
+            Object.values(surveyData).forEach(item => {
+                if (counts[item.size] !== undefined) {
+                    counts[item.size]++;
+                }
+            });
+
+            // Update Chart
+            chartInstance.data.datasets[0].data = shirtSizes.map(s => counts[s.id]);
+            chartInstance.update();
+
+            // Update Badges Summary
+            const badgeContainer = document.getElementById('sizeSummaryBadges');
+            badgeContainer.innerHTML = '';
+
+            shirtSizes.forEach(s => {
+                const count = counts[s.id];
+                if (count > 0) {
+                    const badge = document.createElement('span');
+                    badge.className = 'bg-rose-50 border border-rose-200 text-rose-700 text-xs px-2.5 py-1 rounded-xl font-medium';
+                    badge.innerHTML = `อก ${s.id}": <b>${count}</b> ตัว`;
+                    badgeContainer.appendChild(badge);
+                }
+            });
+
+            if (badgeContainer.children.length === 0) {
+                badgeContainer.innerHTML = '<span class="text-xs text-slate-400">ยังไม่มีข้อมูลการเลือกขนาดเสื้อ</span>';
+            }
+        }
+
+        // Export to CSV / Excel compatible
+        function exportToCSV() {
+            if (Object.keys(surveyData).length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'ยังไม่มีข้อมูล',
+                    text: 'ยังไม่มีการลงทะเบียนเลือกไซส์เสื้อ',
+                    confirmButtonColor: '#e11d48'
+                });
+                return;
+            }
+
+            // BOM for UTF-8 Excel support
+            let csvContent = "\uFEFFลำดับ,ชื่อ-นามสกุล,ขนาดเสื้อ (อก นิ้ว),หมายเหตุ,เวลาบันทึก\n";
+
+            memberList.forEach((name, index) => {
+                const item = surveyData[name];
+                const size = item ? `อก ${item.size} นิ้ว` : "ยังไม่ระบุ";
+                const note = item && item.note ? `"${item.note.replace(/"/g, '""')}"` : "";
+                const time = item ? item.updatedAt : "";
+                
+                csvContent += `${index + 1},"${name}",${size},${note},"${time}"\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `สรุปขนาดเสื้อกีฬาสี_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Copy Text Summary to Clipboard
+        function copyToClipboard() {
+            if (Object.keys(surveyData).length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'ยังไม่มีข้อมูล',
+                    text: 'ยังไม่มีข้อมูลที่จะคัดลอก',
+                    confirmButtonColor: '#e11d48'
+                });
+                return;
+            }
+
+            let text = "📌 สรุปการเลือกขนาดเสื้อกีฬาสี\n\n";
+            let count = 0;
+
+            memberList.forEach((name, index) => {
+                const item = surveyData[name];
+                if (item) {
+                    count++;
+                    text += `${index + 1}. ${name} -> อก ${item.size} นิ้ว ${item.note ? `(${item.note})` : ''}\n`;
+                }
+            });
+
+            text += `\nยอดตอบรับแล้ว: ${count}/${memberList.length} คน`;
+
+            // Copy logic
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'คัดลอกสำเร็จ!',
+                text: 'นำข้อความไปวางในไลน์หรือแอปอื่นได้ทันที',
+                timer: 1800,
+                showConfirmButton: false
+            });
+        }
+
+        // Reset Data
+        function resetDataConfirm() {
+            Swal.fire({
+                title: 'ล้างข้อมูลทั้งหมด?',
+                text: 'การดำเนินการนี้จะลบรายการที่บันทึกไว้ทั้งหมด',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'ลบข้อมูล',
+                cancelButtonText: 'ยกเลิก',
+                customClass: {
+                    popup: 'rounded-3xl'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    surveyData = {};
+                    saveData();
+                    renderDashboard();
+                    updateChart();
+                    document.getElementById('surveyForm').reset();
+                    document.querySelectorAll('.size-card').forEach(c => c.classList.remove('active'));
+                    document.getElementById('alreadySavedNotice').classList.add('hidden');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ล้างข้อมูลเรียบร้อยแล้ว',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>
